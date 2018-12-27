@@ -1,0 +1,156 @@
+<!-- app/templates/admin/trainees/trainees.html -->
+{% import "bootstrap/utils.html" as utils %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% import "_macros.html" as macros %}
+{% from "_formhelpers.html" import render_field %}
+{% extends "base.html" %}
+{% block title %}Trainees{% endblock %}
+{% block body %}
+{% if list %}
+<div>
+  <div class="page-header">
+    <h1>Stagiaires</h1>
+    <div class="">
+      <a href="{{ url_for('trainee.add') }}" class="btn btn-success">
+        Ajouter stagiaire
+      </a>
+    </div>
+  </div>
+
+  <form class="form-inline" method="post" action="">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ form.unit_id(class='form-control') }}
+    </div>
+    <div class="form-group">
+        {{ form.first_name(size=20, class='form-control', placeholder=form.first_name.label.text) }}
+    </div>
+    <div class="form-group">
+        {{ form.last_name(size=20, class='form-control', placeholder=form.last_name.label.text) }}
+    </div>
+    <div class="form-group">{{ form.submit(class='form-control') }}</div>
+  </form>
+
+  <div class="actions-bar">
+    <div class="btn-group" role="group" aria-label="...">
+        <a class="btn btn-default printDiv" href="#">Print</a>
+    </div>
+    <div class="btn-group" role="group" aria-label="...">
+        <a type="button" class="btn btn-default" href="{{ url_for('trainee.import_in') }}">Import data</a>
+        <a type="button" class="btn btn-default" href="{{ url_for('trainee.export_out') }}">Export data</a>
+    </div>
+  </div>
+  <div class="">
+      <table class="table">
+        <thead>
+          <tr>
+            <th width=""></th>
+            <th width="15%"> Image </th>
+            <th width="15%"> Matricule </th>
+            <th width="15%"> Nom </th>
+            <th width="15%"> Prénom </th>
+            <th width="15%"> Unité </th>
+            <th width="15%"> Niveau </th>
+            <th width="15%"> Actions </th>
+            <th width="15%">Début </th>
+            <th width="15%">Fin </th>
+            <th width="15%">Tuteur</th>
+            <th width="15%">Numero</th>
+            <th width="15%">Thème </th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for item in list %}
+          <tr>
+            <td> <input type="checkbox" name="items" value="{{ item.id }}"> </td>
+            <td>
+              {% if item.image_url %}
+                <img src="{{item.image_url}}" style="width: 40px; height: 40px">
+              {% endif %}
+            </td>
+            <td> {{ item.registration_number }} </td>
+            <td> {{ item.first_name }} </td>
+            <td> {{ item.last_name }} </td>
+            <td> {{ item.unit.name }} </td>
+            <td> {{ item.level.name }} </td>
+            <td>
+              <div role="presentation" class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                  <i class="fa fa-cog"></i>
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a href="{{ url_for('trainee.edit', id=item.id) }}">
+                      <i class="fa fa-pencil"></i> Modifier
+                    </a>
+                  </li>
+                  <li>
+                    <a href="{{ url_for('trainee.delete', id=item.id) }}">
+                      <i class="fa fa-trash"></i> Supprimer
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      <div class="pagination">
+          {{ macros.pagination_widget(pagination, '.list') }}
+      </div>
+    </div>
+  </div>
+</div>
+<div id="printableArea" class="container">
+  <div class="row">
+  {% for item in list %}
+  <div class="col-md-3">
+    <div class="trainee-card">
+      <div class="trainee-card-head">
+        <div class="trainee-card-head-logo">
+          <img src="{{ url_for('static', filename = 'img/logo.png') }}" style="width: 40px; height: 30px">
+          <p style="height: 10px">STAGIAIRE</p>
+          <b class="reg_number">{{ item.registration_number }}</b>
+        </div>
+        <div class="trainee-card-head-avtr">
+          <img src="{{item.image_url}}" style="width: 40px; height: 40px">
+        </div>
+      </div>
+      <div class="trainee-card-body">
+        <h3 class="full_name">{{ item.first_name + ' ' + item.last_name }}</h3>
+        <ul>
+          <li>Departement : <b>{{ item.unit.department.name }}</b></li>
+          <li>Unité : <b>{{ item.unit.name }}</b></li>
+          <li>Niveau d'étude : <b>{{ item.level.name }}</b></li>
+          <li>Etabl. d'origine : <b>{{ item.school }}</b></li>
+          <li>Tuteur : <b>{{ item.responsable }}</b></li>
+        </ul>
+      </div>
+      <div class="trainee-card-footer">
+        <em>Valable jusqu'au {{ item.ended_date }}</em>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+  </div>
+</div>
+{% else %}
+  <div class="outer">
+    <div class="middle">
+      <div class="inner">
+        <h1 style="text-align:center;">Stagiaires</h1>
+        <div style="text-align: center">
+          <h3>Aucune donnée n'a été ajoutée. </h3>
+          <a href="{{ url_for('trainee.add') }}" class="btn btn-success">
+            Ajouter stagiaire
+          </a>
+          <a type="button" class="btn btn-default" href="{{ url_for('trainee.import_in') }}">Import data</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% endblock %}

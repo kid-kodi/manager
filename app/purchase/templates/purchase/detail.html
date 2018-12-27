@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% set active_page = "purchase" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block body %}
+    <table class="table table-hover">
+        <tr>
+            <td>
+                <h1>{{ purchase.serial }}</h1>
+                <h3>{{ purchase.supplier.display_as }} | {{ purchase.amount }}</h3>
+                {% if purchase.created_at %}
+                <p>{{ _('Effectué le') }}: {{ purchase.created_at }}</p>
+                {% endif %}
+                {% if purchase.purchase_items|length  > 0%}
+                <p>{{ _('Nombre de produit / service commandés') }}: {{ purchase.purchase_items|length }}</p>
+                {% endif %}
+                <p>
+                  {% if purchase.status == 0 %}
+                    <span class="glyphicon glyphicon-time"></span>
+                  {% elif purchase.status == 1 %}
+                    <span class="glyphicon glyphicon-ok"></span>
+                  {% endif %}
+                </p>
+            </td>
+            <td class="text-right">
+                {% if purchase.status == 0 %}
+                <p><a class="btn btn-default" href="{{ url_for('purchase.edit', id=purchase.id) }}">{{ _('Modifier Produits') }}</a></p>
+                <p><a class="btn btn-default" href="{{ url_for('purchase.validate', id=purchase.id) }}">{{ _('Valider') }}</a></p>
+                {{ wtf.quick_form(form) }}
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+    {% if purchase.purchase_items|length  > 0 %}
+    <div class="">
+      <h1>produits / services commandés</h1>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Produit / Services</th>
+            <th>Nombre</th>
+            <th>Prix unitaire</th>
+            <th>Montant</th>
+            <th class="text-right"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in purchase.purchase_items %}
+            <tr>
+              <td>{{item.item.name}}</td>
+              <td>{{item.item_number}}</td>
+              <td>{{item.item_price}}</td>
+              <td>{{item.item_amount}}</td>
+              <td>{{item.created_at}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+    {% if purchase.invoices|length  > 0 %}
+    <div class="">
+      <h1>Facture</h1>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>DATE</th>
+            <th>NO.</th>
+            <th>MONTANT</th>
+            <th class="text-right"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in purchase.invoices %}
+            <tr>
+              <td>{{item.created_at}}</td>
+              <td>{{item.serial}}</td>
+              <td>{{item.amount}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+{% endblock %}

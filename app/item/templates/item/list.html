@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<h1>Produit et services</h1>
+<a class="btn btn-success" href="{{url_for('item.add')}}">Nouveau produit ou service</a>
+<div>
+    {% if list | length > 0%}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Nom du produit</th>
+            <th>Description</th>
+            <th>Quantité</th>
+            <th>statut</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in list %}
+        <tr>
+            <td>{{i.name}}</td>
+            <td>{{i.description}}</td>
+            <td>{{i.quantity}}</td>
+            <td>{{i.status}}</td>
+            <td>
+                <a class="btn btn-default" href="{{url_for('item.edit', id=i.id)}}">Modifier</a>
+                <a class="btn btn-default" href="{{url_for('item.detail', id=i.id)}}">Détails</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <h3>Pas de produits ou de services enregistrés</h3>
+    {% endif %}
+</div>
+{% endblock %}

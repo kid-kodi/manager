@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<div>
+    <div>
+        <button>Imprimer</button>
+        <button>Email</button>
+        <button>Export</button>
+    </div>
+    <div>
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="">
+                        {{ form.from_date.label }}
+                        {{ form.from_date(class_="form-control from") }}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="">
+                        {{ form.to_date.label }}
+                        {{ form.to_date(class_="form-control to") }}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    {{ form.submit(class_="btn btn-success") }}
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="report" style="width:400px; margin:100px auto;">
+        <div class="report-title text-center">
+            <h1>Company name</h1>
+            <h3>BENEFICE</h3>
+            <p>{{ form.from_date.data }} - {{ form.to_date.data }}</p>
+        </div>
+        <div class="report-body" style="margin:50px auto;">
+            <table class="table incomes">
+                <tr>
+                    <td>Total des ventes</td>
+                    <td class="text-bold">{{ orders | sum(attribute='amount') }} F.CFA</td>
+                </tr>
+                <tr>
+                    <td>Total des dépenses</td>
+                    <td class="text-bold">{{ purchases | sum(attribute='amount') }} F.CFA</td>
+                </tr>
+                <tr>
+                    <td>Bénéfice</td>
+                    <td class="text-bold">{{ (orders | sum(attribute='amount')) - (purchases | sum(attribute='amount'))
+                        }} F.CFA
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div></div>
+</div>
+{% endblock %}

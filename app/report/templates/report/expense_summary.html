@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<div>
+    <div>
+        <button>Imprimer</button>
+        <button>Email</button>
+        <button>Export</button>
+    </div>
+    <div>
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="">
+                        {{ form.from_date.label }}
+                        {{ form.from_date(class_="form-control from") }}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="">
+                        {{ form.to_date.label }}
+                        {{ form.to_date(class_="form-control to") }}
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    {{ form.submit(class_="btn btn-success") }}
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="report" style="width:400px; margin:100px auto;">
+        <div class="report-title text-center">
+            <h1>Company name</h1>
+            <h3>RECAPITULATIF DES DEPENSES</h3>
+            <p>{{ form.from_date.data }} - {{ form.to_date.data }}</p>
+        </div>
+        <div class="report-body" style="margin:50px auto;">
+            <table class="table incomes">
+                <tr>
+                    <td></td>
+                    <td>QUANTITE</td>
+                    <td>PRIX UNITAIRE</td>
+                    <td>AMOUNT</td>
+                </tr>
+                {% for item in purchases %}
+                <tr>
+                    <td>{{item.name}}</td>
+                    <td>{{item.item_number}}</td>
+                    <td>{{item.item_price}}</td>
+                    <td>{{item.item_amount}}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>TOTAL</td>
+                    <td class="text-bold">{{ purchases | sum(attribute='item_amount') }} F.CFA</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div></div>
+</div>
+{% endblock %}

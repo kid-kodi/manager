@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<div class="row">
+    <div class="col-md-12">
+        <h1>Rapports</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-body text-center">
+                <p>COMPTE DE RESULTAT</p>
+                <h3></h3>
+                <a href="{{ url_for('report.profit_and_lost') }}">Commencer</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-body text-center">
+                <p>RECAPITULATIF DES DEPENSES</p>
+                <h3></h3>
+                <a href="{{ url_for('report.expense_summary') }}">Commencer</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-body text-center">
+                <p>RECAPITULATIF DES VENTES</p>
+                <h3></h3>
+                <a href="{{ url_for('report.sale_summary') }}">Commencer</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

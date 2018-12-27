@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<h1>Fourniseur</h1>
+<a class="btn btn-success" href="{{url_for('supplier.add')}}">Nouveau fournisseur</a>
+<div>
+    {% if list | length > 0%}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Raison sociale</th>
+            <th>Nom</th>
+            <th>Prénoms</th>
+            <th>Téléphone</th>
+            <th>Adresse email</th>
+            <th>statut</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for i in list %}
+        <tr>
+            <td>{{i.display_as}}</td>
+            <td>{{i.first_name}}</td>
+            <td>{{i.last_name}}</td>
+            <td>{{i.phone}}</td>
+            <td>{{i.email}}</td>
+            <td>{{i.status}}</td>
+            <td>
+                <a class="btn btn-default" href="{{url_for('supplier.edit', id=i.id)}}">Modifier</a>
+                <a class="btn btn-default" href="{{url_for('supplier.detail', id=i.id)}}">Détails</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <h3>Pas de fournisseur enregistrés</h3>
+    {% endif %}
+</div>
+{% endblock %}

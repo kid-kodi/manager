@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+{% block body %}
+    <table class="table table-hover">
+        <tr>
+            <td>
+                <h1>{{ _('Acquisition') }}: {{ order.customer.name }}</h1>
+                {% if order.created_at %}
+                <p>{{ _('Nombre ') }}: {{ order.patient_number }}</p>
+                <p>{{ _('Last seen on') }}: {{ moment(order.created_at).format('LLL') }}</p>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+    <form method="POST">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            {{ form.validate_at.label }}
+            {{ form.validate_at(class_="form-control datepicker") }}
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            {{ form.is_ok.label }}
+            {{ form.is_ok(class_="form-control") }}
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            {{ form.description.label }}
+            {{ form.description(class_="form-control") }}
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="form-footer col-md-12">
+          {{ form.hidden_tag() }}
+          {{ form.submit(class_="btn btn-success") }}
+        </div>
+      </div>
+    </form>
+{% endblock %}

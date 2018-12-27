@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ title }} | MANAGER</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/jquery-ui.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/print.css') }}" media="print">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/my-badge.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename = 'css/invoice.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-default topnav" role="navigation">
+        <div class="container topnav">
+          <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+                  <a class="navbar-brand topnav" href="{{ url_for('home.dashboard') }}">
+                   <img class="logo" alt="Brand" src="{{ url_for('static', filename = 'img/logo.png') }}">
+                 </a>
+          </div>
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              {% if g.search_form %}
+                <form class="navbar-form navbar-left" method="get" action="{{ url_for('home.search') }}">
+                    <div class="form-group">
+                        {{ g.search_form.q(size=20, class='form-control', placeholder=g.search_form.q.label.text) }}
+                    </div>
+                </form>
+              {% endif %}
+              <ul class="nav navbar-nav">
+                  <li><a href="{{ url_for('home.dashboard') }}">Dashboard</a></li>
+                  <li><a href="{{ url_for('supplier.index') }}">Fournisseurs</a></li>
+                  <li><a href="{{ url_for('purchase.index') }}">Achats</a></li>
+                   <li><a href="{{ url_for('customer.index') }}">Clients</a></li>
+                   <li><a href="{{ url_for('order.index') }}">Ventes</a></li>
+                   <li><a href="{{ url_for('item.list') }}">Produits / Services</a></li>
+                   <li><a href="{{ url_for('report.list') }}">Rapport</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                  {% if current_user.is_authenticated %}
+                      <li>
+                        <a href="#">
+                          <i class="fa fa-bell"></i>
+                        </a>
+                      </li>
+                      <li role="presentation" class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                          <i class="fa fa-cog"></i>
+                          <span class="caret"></span> </a>
+                        <ul class="dropdown-menu">
+                          <li><a href="{{ url_for('home.setup') }}">Configuration</a></li>
+                        </ul>
+                      </li>
+                      <li role="presentation" class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                          <i class="fa fa-user"></i>
+                          <span class="caret"></span> </a>
+                        <ul class="dropdown-menu">
+                          <li class="dropdown-header">{{ current_user.username }}</li>
+                          <li><a href="{{ url_for('home.user', username=current_user.username) }}">Mon profile</a></li>
+                          <li role="separator" class="divider"></li>
+                          <li><a href="#">Aidez-moi</a></li>
+                          <li><a href="#">Réglage</a></li>
+                          <li role="separator" class="divider"></li>
+                          <li><a href="{{ url_for('auth.logout') }}">Déconnecter</a></li>
+                        </ul>
+                      </li>
+
+                  {% else %}
+                    <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+                    <li><a href="{{ url_for('auth.login') }}">S'identifier</a></li>
+                  {% endif %}
+              </ul>
+          </div>
+        </div>
+    </nav>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    <div class="container">
+      {% block body %}
+      {% endblock %}
+    </div>
+
+    <script src="{{ url_for('static', filename = 'js/jquery.js') }}"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename = 'js/jquery-ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/combobox.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/page.js') }}"></script>
+
+    <script src="{{url_for('static', filename='js/app.js')}}"></script>
+</body>
+</html>

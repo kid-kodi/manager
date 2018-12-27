@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<h1>{{item.name}}</h1>
+<a class="btn btn-default" href="{{url_for('item.edit', id=item.id)}}">Modifier</a>
+<div>
+    <h3>Information générale</h3>
+    <table class="table">
+        <tr>
+            <td>Catégorie</td>
+            <td>{{item.category_id}}</td>
+        </tr>
+        <tr>
+            <td>Nom</td>
+            <td>{{item.name}}</td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td>{{item.description}}</td>
+        </tr>
+        <tr>
+            <td>Prix de vente</td>
+            <td>{{item.selling_price}}</td>
+        </tr>
+        <tr>
+            <td>Prix d'achat</td>
+            <td>{{item.buying_price}}</td>
+        </tr>
+        <tr>
+            <td>Quantité</td>
+            <td>{{item.quantity}}</td>
+        </tr>
+        <tr>
+            <td>Statut</td>
+            <td>{{item.status}}</td>
+        </tr>
+    </table>
+</div>
+{% if item.purchase_items|length  > 0 %}
+    <div class="">
+      <h1>Les achats</h1>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>NO.</th>
+            <th>Nombre</th>
+            <th>Prix unitaire</th>
+            <th>Montant</th>
+            <th class="text-right"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for _item in item.purchase_items %}
+            <tr>
+              <td>{{_item.purchase.serial}}</td>
+              <td>{{_item.item_number}}</td>
+              <td>{{_item.item_price}}</td>
+              <td>{{_item.item_amount}}</td>
+              <td>{{_item.created_at}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+{% endif %}
+{% if item.order_items|length  > 0 %}
+    <div class="">
+      <h1>Les ventes</h1>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>NO.</th>
+            <th>Nombre</th>
+            <th>Prix unitaire</th>
+            <th>Montant</th>
+            <th class="text-right"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for _item in item.order_items %}
+            <tr>
+              <td>{{_item.order.serial}}</td>
+              <td>{{_item.item_number}}</td>
+              <td>{{_item.item_price}}</td>
+              <td>{{_item.item_amount}}</td>
+              <td>{{_item.created_at}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+{% endif %}
+{% endblock %}

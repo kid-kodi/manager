@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<h1>{{supplier.display_as}}</h1>
+<a class="btn btn-default" href="{{url_for('supplier.edit', id=supplier.id)}}">Modifier</a>
+<div>
+    <h3>Information générale</h3>
+    <table class="table">
+        <tr>
+            <td>Raison sociale</td>
+            <td>{{supplier.display_as}}</td>
+        </tr>
+        <tr>
+            <td>Nom</td>
+            <td>{{supplier.first_name}}</td>
+        </tr>
+        <tr>
+            <td>Prénoms</td>
+            <td>{{supplier.last_name}}</td>
+        </tr>
+        <tr>
+            <td>Téléphone</td>
+            <td>{{supplier.phone}}</td>
+        </tr>
+        <tr>
+            <td>Email</td>
+            <td>{{supplier.email}}</td>
+        </tr>
+        <tr>
+            <td>Statut</td>
+            <td>{{supplier.status}}</td>
+        </tr>
+    </table>
+</div>
+{% endblock %}

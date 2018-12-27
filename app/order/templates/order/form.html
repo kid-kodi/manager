@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% set active_page = "order" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block body %}
+<h1>{{ _('Nouvelle vente') }}</h1>
+{% if form.errors %}
+<ul class="errors">
+    {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+    {% for error in field_errors %}
+    <li>{{ form[field_name].label }}: {{ error }}</li>
+    {% endfor %}
+    {% endfor %}
+</ul>
+{% endif %}
+<form method="POST">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                {{ form.customer.label }}
+                {{ form.customer(class_="form-control combobox") }}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                {{ form.first_name.label }}
+                {{ form.first_name(class_="form-control") }}
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                {{ form.last_name.label }}
+                {{ form.last_name(class_="form-control") }}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                {{ form.send_date.label }}
+                {{ form.send_date(class_="form-control datepicker") }}
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                {{ form.receive_date.label }}
+                {{ form.receive_date(class_="form-control datepicker") }}
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="table-container col-md-12" data-toggle="fieldset" id="order_item-fieldset">
+            <table class="table">
+                <tr>
+                    <th>Produit / Service</th>
+                    <th>Nombre</th>
+                    <th>Prix unitaire</th>
+                    <th>Montant</th>
+                    <th></th>
+                </tr>
+                {% for order_item in form.orderItems %}
+                <tr data-toggle="fieldset-entry">
+                    <td>
+                        {{ order_item.item_id(class_="form-control combobox product") }}
+                        <input id="transaction_type" type="hidden" value="sale">
+                    </td>
+                    <td>{{ order_item.item_number(class_="form-control qty") }}</td>
+                    <td class="price">{{ order_item.item_price(class_="form-control price") }}</td>
+                    <td class="row-total">{{ order_item.item_amount(class_="form-control amount row-total-input") }}
+                    </td>
+                    <td class="text-right">
+                        <button class="btn btn-default" data-toggle="fieldset-remove-row"
+                                id="order_item-{{loop.index0}}-remove">
+                            Supprimer
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="2">
+                        <button class="btn btn-default" type="button" data-toggle="fieldset-add-row"
+                                data-target="#order_item-fieldset">Ajouter un produit
+                        </button>
+                        <button class="btn btn-default">
+                            Tout supprimer
+                        </button>
+                    </td>
+                    <td>TOTAL :</td>
+                    <td colspan="2">{{form.amount(class_="form-control total") }}</td>
+                </tr>
+            </table>
+            <div class="table-actions">
+
+            </div>
+        </div>
+        <div class="form-footer col-md-12">
+            {{ form.hidden_tag() }}
+            {{ form.submit(class_="btn btn-success") }}
+        </div>
+    </div>
+</form>
+
+{% endblock %}
