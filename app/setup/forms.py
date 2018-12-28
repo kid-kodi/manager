@@ -1,10 +1,23 @@
 # app/auth/forms.py
 
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField, SubmitField, ValidationError
+from wtforms import PasswordField, StringField, SubmitField, ValidationError, FileField, HiddenField
 from wtforms.validators import DataRequired, Email, EqualTo
+from flask_wtf.file import FileField, FileAllowed, FileRequired
+from app import images
 
 from ..models import User
+
+
+class CompanyForm(FlaskForm):
+    image = FileField('Logo', validators=[FileAllowed(images, 'Images seulement')])
+    registration_number = HiddenField(validators=[DataRequired()])
+    company_name = StringField('Nom de la société', validators=[DataRequired()])
+    email = StringField('Adresse email', validators=[DataRequired(), Email()])
+    phone = StringField('Téléphone', validators=[DataRequired()])
+    web_site = StringField('Site web')
+    address = StringField('Adresse')
+    submit = SubmitField('Enregistrer')
 
 
 class RegistrationForm(FlaskForm):
@@ -29,12 +42,3 @@ class RegistrationForm(FlaskForm):
     def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('Username is already in use.')
-
-
-class LoginForm(FlaskForm):
-    """
-    Form for users to login
-    """
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Login')

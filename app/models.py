@@ -9,6 +9,21 @@ from app import db, login
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
+class Company(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    registration_num = db.Column(db.String(255))
+    logo = db.Column(db.String(255))
+    company_name = db.Column(db.String(255))
+    email = db.Column(db.String(255))
+    phone = db.Column(db.String(255))
+    web_site = db.Column(db.String(255))
+    address = db.Column(db.String(255))
+    users = db.relationship('User', backref='company',
+                            lazy='dynamic')
+    created_at = db.Column(db.DateTime(), default=datetime.utcnow)
+    created_by = db.Column(db.Integer)
+
+
 class User(UserMixin, db.Model):
     """
     Create an User table
@@ -19,6 +34,7 @@ class User(UserMixin, db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
+    company_id = db.Column(db.Integer, db.ForeignKey('company.id'))
     email = db.Column(db.String(60), index=True, unique=True)
     username = db.Column(db.String(60), index=True, unique=True)
     first_name = db.Column(db.String(60), index=True)

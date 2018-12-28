@@ -48,6 +48,12 @@ def create_app(config_name=Config):
     from .role import role as role_blueprint
     app.register_blueprint(role_blueprint)
 
+    from .setup import setup as setup_blueprint
+    app.register_blueprint(setup_blueprint)
+
+    from .company import company as company_blueprint
+    app.register_blueprint(company_blueprint)
+
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
 

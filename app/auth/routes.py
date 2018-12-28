@@ -8,6 +8,7 @@ from .forms import LoginForm, RegistrationForm
 from .. import db
 from ..models import User
 
+
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     """
@@ -16,12 +17,12 @@ def register():
     """
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(avatar=os.path.join( current_app.config['UPLOADS_DEFAULT_DEST'], 'default.png' ),
-            email=form.email.data,
-            username=form.username.data,
-            first_name=form.first_name.data,
-            last_name=form.last_name.data,
-            password=form.password.data)
+        user = User(avatar=os.path.join(current_app.config['UPLOADS_DEFAULT_DEST'], 'default.png'),
+                    email=form.email.data,
+                    username=form.username.data,
+                    first_name=form.first_name.data,
+                    last_name=form.last_name.data,
+                    password=form.password.data)
 
         # add user to the database
         db.session.add(user)
@@ -33,6 +34,7 @@ def register():
 
     # load registration template
     return render_template('auth/register.html', form=form, title='Register')
+
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
@@ -54,6 +56,7 @@ def login():
 
     # load login template
     return render_template('auth/login.html', form=form, title='Login')
+
 
 @auth.route('/logout')
 @login_required

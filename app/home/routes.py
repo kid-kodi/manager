@@ -1,7 +1,7 @@
 # app/home/views.py
 import os
 from datetime import datetime
-from flask import render_template, flash, redirect, url_for, request, g, \
+from flask import request, render_template, flash, redirect, url_for, request, g, \
     jsonify, current_app
 from flask_login import current_user, login_required
 from flask_babel import _, get_locale
@@ -16,14 +16,18 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 @home.before_app_request
 def before_request():
-    if current_user.is_authenticated:
+    users = User.query.all()
+    number = len(users)
+    # check if user exist in database
+    if number == 0 and request.endpoint != 'setup.start' and request.endpoint != 'setup.company' and request.endpoint != 'setup.register':
+        return redirect(url_for('setup.start'))
+    elif current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
-    #     g.search_form = SearchForm()
-    # g.locale = str(get_locale())
 
 
 @home.route('/')
+@login_required
 def dashboard():
     """
     Render the homepage template on the / route
